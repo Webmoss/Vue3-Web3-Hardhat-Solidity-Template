@@ -1,8 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import Layout from './components/layout.vue';
-import NotConnectedForm from './components/not-connected-form.vue';
-import InputForm from './components/input-form.vue';
+import { onMounted, ref } from "vue";
+// import Layout from './components/layout.vue';
+// import NotConnectedForm from './components/not-connected-form.vue';
+// import InputForm from './components/input-form.vue';
+
+import AppHeader from "./components/AppHeader.vue";
+import ReloadPrompt from "./components/ReloadPrompt.vue";
 
 const currentAccount = ref();
 
@@ -10,19 +13,19 @@ async function checkIfWalletIsConnected() {
   const { ethereum } = window;
 
   if (!ethereum) {
-    console.log('Error: No ethereum window object');
+    console.log("Error: No ethereum window object");
     return;
   } else {
-    console.log('we have an ethereum object', ethereum);
+    console.log("we have an ethereum object", ethereum);
   }
 
-  const accounts = await ethereum.request({ method: 'eth_accounts' });
+  const accounts = await ethereum.request({ method: "eth_accounts" });
 
   if (accounts.length !== 0) {
     const account = accounts[0];
     currentAccount.value = account;
   } else {
-    console.log('No authorized accounts');
+    console.log("No authorized accounts");
   }
 }
 
@@ -32,12 +35,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <layout>
+  <!-- <layout>
     <not-connected-form v-model="currentAccount" v-if="!currentAccount" />
     <input-form v-if="currentAccount" />
-  </layout>
+  </layout> -->
+
+  <AppHeader />
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" :key="$route.name" />
+    </keep-alive>
+  </router-view>
+  <ReloadPrompt />
 </template>
 
 <style>
-@import './assets/base.css';
+@import "./assets/base.css";
 </style>
