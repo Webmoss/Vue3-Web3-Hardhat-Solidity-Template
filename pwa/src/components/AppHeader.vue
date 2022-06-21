@@ -1,19 +1,13 @@
 <template>
   <header id="header">
     <div class="header-title">
-      <h1>InstaShare<span class="emoji">⚡</span></h1>
+      <h1><span class="emoji">⚡</span> Mojo</h1>
       <span>Instant File Sharing powered by IPFS Protocol</span>
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
         <router-link :to="{ name: 'home' }" active-class="active" exact>Home</router-link>
-
-        <a href="https://github.com/nyancodeid/insta-share" target="_blank" rel="noopener"
-          >Github</a
-        >
-
         <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link>
-
         <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
           <i-mdi-brightness-7 v-if="isDark" class="icon-color" @click="toggleTheme" />
           <i-mdi-brightness-4 v-else class="icon-color" @click="toggleTheme" />

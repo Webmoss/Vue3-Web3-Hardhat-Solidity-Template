@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import VUpload from '../views/VUpload.vue';
-
-// Async Component
-const VAbout = () => import('../views/VAbout.vue');
+// Async Components
+const HomeView = () => import('../views/HomeView.vue');
+const AboutView = () => import('../views/AboutView.vue');
 
 const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
@@ -21,12 +19,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: VUpload,
-    },
-    {
-      path: '/',
-      name: 'upload',
-      component: VUpload,
+      component: HomeView,
     },
     {
       path: '/about',
@@ -34,7 +27,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: VAbout,
+      component: AboutView,
     },
   ],
 });
