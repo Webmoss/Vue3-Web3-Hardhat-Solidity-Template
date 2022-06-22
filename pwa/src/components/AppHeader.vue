@@ -1,7 +1,7 @@
 <template>
   <header id="header">
     <div class="header-title">
-      <h1><span class="emoji">⚡</span> Mojo</h1>
+      <h1><span class="emoji">🎧</span> Mojo</h1>
       <span>Instant File Sharing powered by IPFS Protocol</span>
     </div>
     <div class="header-menu">

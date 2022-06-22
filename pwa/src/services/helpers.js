@@ -99,7 +99,7 @@ export const generateShortLink = async (url) => {
       return [null, data];
     }
   } catch (error) {
-    return [new Error(`Ops! error while generate shorten link.`), null];
+    return [new Error(`Ops! error while generating a shorten link.`), null];
   }
 };
 
