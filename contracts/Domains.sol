@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+//SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.4;
 
 // See example here https://www.youtube.com/watch?v=qrU0_VYMYOg

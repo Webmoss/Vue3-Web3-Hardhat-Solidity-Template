@@ -1,4 +1,4 @@
-# 
+# Mojo
 
 ## Basic Sample Hardhat Project
 

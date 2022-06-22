@@ -16,18 +16,11 @@
             </div>
             <div class="item-detail">
               <span class="item-detail--title" :title="item.file.name">{{ item.file.name }}</span>
-              <span class="item-detail--subtitle"
-                >{{ fileSize(item.file.size) }} • {{ item.file.type }}</span
-              >
+              <span class="item-detail--subtitle">{{ fileSize(item.file.size) }} • {{ item.file.type }}</span>
             </div>
             <div class="item-action">
-              <a
-                v-if="!!item.shorten"
-                title="Open Shorten Link"
-                target="_blank"
-                :href="generateLink(item, true)"
-                rel="noopener"
-              >
+              <a v-if="!!item.shorten" title="Open Shorten Link" target="_blank" :href="generateLink(item, true)"
+                rel="noopener">
                 <i-ri-link-unlink-m class="icon-color" />
               </a>
               <a v-else title="Generate Shorten Link" @click="shortenLink(item)">
@@ -41,13 +34,8 @@
           </div>
           <div class="item-cid">
             <label>
-              <input
-                class="input-cid"
-                type="text"
-                readonly
-                @focus="$event.target.select()"
-                :value="generateLink(item)"
-              />
+              <input class="input-cid" type="text" readonly @focus="$event.target.select()"
+                :value="generateLink(item)" />
             </label>
 
             <a title="Copy to clipboard" @click="copyFileLink(item)">
@@ -159,10 +147,12 @@ section#panel-result {
       &::-webkit-scrollbar {
         width: 0.3rem;
       }
+
       &::-webkit-scrollbar-track {
         background: rgba(255, 255, 255, 0.2);
         border-radius: 1rem;
       }
+
       &::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.6);
         border-radius: 1rem;
@@ -197,6 +187,7 @@ section#panel-result {
           .item-icon {
             padding: 0.5rem 0.5rem 0.5rem 0;
           }
+
           .item-detail {
             display: flex;
             flex-direction: column;
@@ -211,10 +202,12 @@ section#panel-result {
 
               margin-bottom: 0.4rem;
             }
+
             .item-detail--subtitle {
               font-size: 0.7rem;
             }
           }
+
           .item-action {
             display: flex;
             align-items: center;
@@ -249,6 +242,7 @@ section#panel-result {
               font-size: 0.7rem;
             }
           }
+
           a {
             margin-left: 0.5rem;
           }
@@ -268,6 +262,7 @@ body.dark-theme {
       .item-detail--subtitle {
         color: rgba(255, 255, 255, 0.5);
       }
+
       .item-cid .input-cid {
         color: rgba(255, 255, 255, 0.8);
       }

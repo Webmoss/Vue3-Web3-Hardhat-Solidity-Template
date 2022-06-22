@@ -10,7 +10,7 @@
           <a href="https://vitejs.dev/" target="_blank" rel="noopener">ViteJS</a>.
         </p>
         <p>
-          Mojo is a web-based application that uploads your files to Interplanetary File System
+          🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
           (IPFS) Network using
           <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
           File uploads cannot be deleted, hacked, edited, never saved to any server (decentralized)
