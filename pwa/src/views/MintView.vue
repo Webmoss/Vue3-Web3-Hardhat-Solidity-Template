@@ -11,7 +11,7 @@
             File uploads cannot be deleted, hacked, edited, never saved to any server
             (decentralized) + are only accessable by using a hash / cid (content identifier).
           </p>
-          <NotConnectedForm v-model="currentAccount" v-if="!currentAccount" />
+          <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
           <InputForm v-if="currentAccount" />
         </section>
       </div>
@@ -22,7 +22,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
-import NotConnectedForm from '../components/not-connected-form.vue';
+import ConnectWalletButton from '../components/ConnectWalletButton.vue';
 import InputForm from '../components/input-form.vue';
 
 const currentAccount = ref();

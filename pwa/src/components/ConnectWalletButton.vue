@@ -9,7 +9,7 @@ async function connectWallet() {
   const { ethereum } = window;
   try {
     if (!ethereum) {
-      alert('Get Metamask');
+      alert('Please install Metamask!');
       return;
     }
 
@@ -17,17 +17,14 @@ async function connectWallet() {
       method: 'eth_requestAccounts',
     });
     emit('update:modelValue', accounts[0]);
-    console.log('accounts', accounts[0]);
+    console.log('Accounts', accounts[0]);
   } catch (error) {
-    console.log('error', error);
+    console.log('Error', error);
   }
 }
 </script>
 <template>
   <div className="connect-wallet-container">
-    <img src="https://media.giphy.com/media/3ohhwytHcusSCXXOUg/giphy.gif" alt="Donut gif" />
-    <button @click="connectWallet" className="cta-button connect-wallet-button">
-      Connect Wallet
-    </button>
+    <button @click="connectWallet" className="connect-wallet-button">🎧 Connect Wallet</button>
   </div>
 </template>

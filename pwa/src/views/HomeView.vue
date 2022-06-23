@@ -10,23 +10,27 @@
         <div class="right">
           <h1>Hear It, See It, Live it.</h1>
           <p>
-            Stream your favorite Audio and Media directly from artists and creators on the
-            blockchain. Subscribe and follow to earn special rewards and NFT's
+            Stream your favorite Audio/Media directly from artists and content creators on the
+            blockchain. Subscribe and follow to receive special rewards and earn NFT's.
           </p>
         </div>
       </section>
       <section id="connect">
         <h2>Connect</h2>
         <div class="row">
-          <p>
-            🎧 Mojo uploads your files to Interplanetary File System (<a href="https://infura.io/product/ipfs"
-              target="_blank" rel="noopener">IPFS</a>) Network.
-          </p>
-          <p>
-            File uploads can never get deleted, hacked, edited and never saved to any server (100%
-            decentralized).
-          </p>
-          <p>Share your content by using a hash / cid (content identifier)</p>
+          <div class="left">
+            <p>
+              Mojo uploads your files to Interplanetary File System (<a href="https://infura.io/product/ipfs"
+                target="_blank" rel="noopener">IPFS</a>) Network. File uploads can never get deleted, hacked, edited and
+              never saved to any
+              server (100% decentralized). Share your content by using a hash / cid (content
+              identifier)
+            </p>
+          </div>
+          <div class="right">
+            <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
+            <button v-else className="stream-button">🎧 Stream Now</button>
+          </div>
         </div>
       </section>
       <section id="about">
@@ -67,9 +71,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-// Icons
-import HomeIcon from '../assets/svgs/HomeIcon.vue';
-
+import ConnectWalletButton from '../components/ConnectWalletButton.vue';
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
@@ -94,6 +96,7 @@ async function checkIfWalletIsConnected() {
 
 onMounted(() => {
   checkIfWalletIsConnected();
+  console.log('currentAccount: ', currentAccount);
 });
 </script>
 
@@ -111,6 +114,7 @@ section#content {
     section#home {
       color: #212121;
       background: #ffca28;
+      border-bottom: 1px solid #1a1a1a;
       display: flex;
       flex-direction: row;
       align-content: center;
@@ -184,17 +188,34 @@ section#content {
       display: flex;
       flex-direction: column;
       align-content: center;
-      align-content: center;
-      justify-content: space-between;
-      padding: 20px;
+      justify-content: center;
+      padding: 20px 20px 80px 20px;
 
       .row {
         display: flex;
         flex-direction: row;
         align-content: center;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .left {
+        width: 50%;
+        display: flex;
+        flex-direction: row;
         align-content: center;
-        justify-content: space-between;
-        padding: 20px;
+        justify-content: center;
+        align-items: center;
+        padding: 0 100px;
+      }
+
+      .right {
+        width: 50%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
       }
 
       h2 {
@@ -341,6 +362,10 @@ section#content {
 }
 
 body.dark-theme {
+  section#content .main section#home {
+    border-bottom: 1px solid #ffffff;
+  }
+
   section#content .main section#home .author {
     background-color: var(--gradient-800);
   }

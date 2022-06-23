@@ -56,8 +56,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   transition: border-bottom 0.5s ease;
-  padding: 1.3em 64px;
-  border-bottom: 1px solid rgb(243, 244, 246);
+  padding: 1em 64px;
+  border-bottom: 1px solid #1a1a1a;
 
   .header-title {
     h1 {
@@ -110,7 +110,7 @@ export default {
 
 body.dark-theme {
   #header {
-    border-bottom: 1px solid #1c2435;
+    border-bottom: 1px solid #ffffff;
 
     .header-title h1 {
       color: #ffffff;
