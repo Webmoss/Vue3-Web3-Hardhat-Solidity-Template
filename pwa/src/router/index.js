@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // Async Components
 const HomeView = () => import('../views/HomeView.vue');
-const AboutView = () => import('../views/AboutView.vue');
+const StreamView = () => import('../views/StreamView.vue');
+const UploadView = () => import('../views/UploadView.vue');
+const MintView = () => import('../views/MintView.vue');
 
 const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
@@ -22,12 +24,22 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/upload',
+      name: 'upload',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: AboutView,
+      component: UploadView,
+    },
+    {
+      path: '/stream',
+      name: 'stream',
+      component: StreamView,
+    },
+    {
+      path: '/mint',
+      name: 'mint',
+      component: MintView,
     },
   ],
 });

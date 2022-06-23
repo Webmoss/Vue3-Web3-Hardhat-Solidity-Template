@@ -5,7 +5,7 @@ import { isRunningOnPWA } from './services/helpers';
 import App from './App.vue';
 import router from './router';
 
-import './styles/styles.scss';
+import './assets/styles/styles.scss';
 import 'notyf/notyf.min.css';
 
 const app = createApp(App);

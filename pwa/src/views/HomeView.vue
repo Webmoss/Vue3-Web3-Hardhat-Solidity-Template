@@ -1,142 +1,356 @@
 <template>
   <section id="content">
-    <div class="main animated">
-      <div class="main-content--shadow s-index-1"></div>
-      <div class="main-content--shadow s-index-2"></div>
-      <div class="main-content">
-        <PanelUpload />
-        <PanelResult />
-      </div>
+    <div class="main">
+      <section id="home">
+        <div class="left">
+          <div class="player-graphic">
+            <img src="../assets/images/DJ.png" alt="DJ Saved my Life" />
+          </div>
+        </div>
+        <div class="right">
+          <h1>Hear It, See It, Live it.</h1>
+          <p>
+            Stream your favorite Audio and Media directly from artists and creators on the
+            blockchain. Subscribe and follow to earn special rewards and NFT's
+          </p>
+        </div>
+      </section>
+      <section id="connect">
+        <h2>Connect</h2>
+        <div class="row">
+          <p>
+            🎧 Mojo uploads your files to Interplanetary File System (<a href="https://infura.io/product/ipfs"
+              target="_blank" rel="noopener">IPFS</a>) Network.
+          </p>
+          <p>
+            File uploads can never get deleted, hacked, edited and never saved to any server (100%
+            decentralized).
+          </p>
+          <p>Share your content by using a hash / cid (content identifier)</p>
+        </div>
+      </section>
+      <section id="about">
+        <h2>About</h2>
+        <div class="left">
+          <p>
+            🎧 Mojo is an Instant File Sharing powered by IPFS Protocol. Build with
+            <a href="https://v3.vuejs.org/" target="_blank" rel="noopener">Vue 3</a> and
+            <a href="https://vitejs.dev/" target="_blank" rel="noopener">ViteJS</a>.
+          </p>
+        </div>
+        <div class="right">
+          <p>
+            🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
+            (IPFS) Network using
+            <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
+            File uploads cannot be deleted, hacked, edited, never saved to any server
+            (decentralized) + are only accessable by using a hash / cid (content identifier).
+          </p>
+        </div>
+      </section>
+      <section id="tracks">
+        <h2>Latest Tracks</h2>
+        <div class="left">
+          <p>
+            🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
+            (IPFS) Network using
+            <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
+            File uploads cannot be deleted, hacked, edited, never saved to any server
+            (decentralized) + are only accessable by using a hash / cid (content identifier).
+          </p>
+        </div>
+        <div class="right"></div>
+      </section>
     </div>
   </section>
 </template>
 
-<script>
-import { provide } from 'vue';
-import { Notyf } from 'notyf';
+<script setup>
+import { onMounted, ref } from 'vue';
+// Icons
+import HomeIcon from '../assets/svgs/HomeIcon.vue';
 
-import PanelUpload from '../components/VUpload/PanelUpload.vue';
-import PanelResult from '../components/VUpload/PanelResult.vue';
+const currentAccount = ref();
 
-export default {
-  name: 'HomeView',
-  components: {
-    PanelUpload,
-    PanelResult,
-  },
-  setup() {
-    const NotfyProvider = new Notyf({
-      duration: 2000,
-      position: {
-        x: 'center',
-        y: 'bottom',
-      },
-      types: [
-        {
-          type: 'loading',
-          background: 'orange',
-          duration: 0,
-          dismissible: true,
-          icon: {
-            className: 'icon icon-loading',
-            tagName: 'i',
-          },
-        },
-      ],
-    });
+async function checkIfWalletIsConnected() {
+  const { ethereum } = window;
 
-    provide('notyf', NotfyProvider);
-  },
-};
+  if (!ethereum) {
+    console.log('Error: No ethereum window object');
+    return;
+  } else {
+    console.log('we have an ethereum object', ethereum);
+  }
+
+  const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+  if (accounts.length !== 0) {
+    const account = accounts[0];
+    currentAccount.value = account;
+  } else {
+    console.log('No authorized accounts');
+  }
+}
+
+onMounted(() => {
+  checkIfWalletIsConnected();
+});
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 section#content {
   position: relative;
   height: 100%;
 
   .main {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-
+    width: 100%;
     height: 100%;
+    margin: 0 auto;
+    padding: 0;
 
-    .main-content {
-      position: absolute;
-      z-index: 3;
-
+    section#home {
+      color: #212121;
+      background: #ffca28;
       display: flex;
-      border-radius: 1em;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      flex-direction: row;
+      align-content: center;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
 
-      section {
-        width: 414px;
-        height: 414px;
+      .left {
+        width: 55%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        padding: 20px;
+
+        .player-graphic {
+          width: 100%;
+          margin: 0 auto;
+          padding: 0;
+          overflow: hidden;
+
+          img,
+          svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            overflow: hidden;
+          }
+        }
+      }
+
+      .right {
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+        justify-content: flex-start;
+      }
+
+      h1 {
+        font-size: 4.55rem;
+        margin-bottom: 20px;
+      }
+
+      a {
+        color: var(--contrast-color);
+        font-weight: bold;
+        border-bottom: 1px solid var(--contrast-color);
+        text-decoration: none;
+
+        &.author {
+          padding: 6px 12px;
+          border-radius: 8px;
+          background-color: var(--gradient-100);
+          color: var(--icon-color);
+          font-size: 0.85rem;
+
+          border-bottom: none;
+        }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
       }
     }
 
-    .main-content--shadow {
-      position: absolute;
+    section#connect {
+      color: #1a1a1a;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-content: center;
+      justify-content: space-between;
+      padding: 20px;
 
-      width: 878px;
-      height: 464px;
-
-      box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-        0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      border-radius: 1em;
-
-      &.s-index-1 {
-        z-index: 1;
-        background-image: var(--liniear-gradient-color-1);
-        transition: transform 0.3s ease-in-out;
-
-        transform: rotate(2deg);
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-content: center;
+        justify-content: space-between;
+        padding: 20px;
       }
-      &.s-index-2 {
-        z-index: 2;
-        background-image: var(--liniear-gradient-color-2);
-        transition: transform 0.3s ease-in-out;
 
-        transform: rotate(-2deg);
+      h2 {
+        font-size: 2.85rem;
+        text-align: center;
+      }
 
-        &.animate {
-          animation-name: shadow-index--2;
-          animation-duration: 1s;
+      a {
+        color: #1a1a1a;
+        font-weight: bold;
+        border-bottom: 1px solid #1a1a1a;
+        text-decoration: none;
+
+        &.author {
+          padding: 6px 12px;
+          border-radius: 8px;
+          background-color: var(--gradient-100);
+          color: var(--icon-color);
+          font-size: 0.85rem;
+
+          border-bottom: none;
         }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .graphic {
+        width: 100%;
       }
     }
 
-    &.animated {
-      .main-content--shadow {
-        &.s-index-1 {
-          animation-name: shadow-index--1;
-          animation-duration: 1s;
+    section#about {
+      color: #212121;
+      background: #1c8bfe;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+
+      .left {
+        width: 70%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+      }
+
+      .right {
+        width: 30%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+      }
+
+      h1 {
+        img {
+          display: inline-block;
         }
-        &.s-index-2 {
-          animation-name: shadow-index--2;
-          animation-duration: 1s;
+      }
+
+      a {
+        color: #1a1a1a;
+        font-weight: bold;
+        border-bottom: 1px solid var(--contrast-color);
+        text-decoration: none;
+
+        &.author {
+          padding: 6px 12px;
+          border-radius: 8px;
+          background-color: var(--gradient-100);
+          color: var(--icon-color);
+          font-size: 0.85rem;
+
+          border-bottom: none;
         }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+    }
+
+    section#tracks {
+      color: #fff;
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+
+      .left {
+        width: 30%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+      }
+
+      .right {
+        width: 70%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+      }
+
+      h2 {
+        font-size: 2.85rem;
+        text-align: center;
+      }
+
+      a {
+        color: var(--contrast-color);
+        font-weight: bold;
+        border-bottom: 1px solid var(--contrast-color);
+        text-decoration: none;
+
+        &.author {
+          padding: 6px 12px;
+          border-radius: 8px;
+          background-color: var(--gradient-100);
+          color: var(--icon-color);
+          font-size: 0.85rem;
+
+          border-bottom: none;
+        }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
       }
     }
   }
 }
 
-@keyframes shadow-index--1 {
-  from {
-    transform: rotate(-2deg);
-  }
-  to {
-    transform: rotate(2deg);
+body.dark-theme {
+  section#content .main section#home .author {
+    background-color: var(--gradient-800);
   }
 }
-@keyframes shadow-index--2 {
-  from {
-    transform: rotate(2deg);
-  }
-  to {
-    transform: rotate(-2deg);
+
+@media (min-width: 1024px) {
+  .home {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

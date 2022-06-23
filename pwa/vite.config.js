@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'url';
 
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { resolve } from 'path';
 
 import Vue from '@vitejs/plugin-vue';
 import Components from 'unplugin-vue-components/vite';

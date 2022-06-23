@@ -7,8 +7,10 @@
     <div class="header-menu">
       <nav class="header-navbar">
         <router-link :to="{ name: 'home' }" active-class="active" exact>Home</router-link>
-        <router-link :to="{ name: 'about' }" active-class="active" exact>About</router-link>
-        <i :title="`Switch to ${isDark ? 'Light' : 'Dark'} Theme`">
+        <router-link :to="{ name: 'stream' }" active-class="active" exact>Stream</router-link>
+        <router-link :to="{ name: 'upload' }" active-class="active" exact>Upload</router-link>
+        <router-link :to="{ name: 'mint' }" active-class="active" exact>Mint</router-link>
+        <i :title="`Let's Jam ${isDark ? 'Light' : 'Dark'} Mode`">
           <i-mdi-brightness-7 v-if="isDark" class="icon-color" @click="toggleTheme" />
           <i-mdi-brightness-4 v-else class="icon-color" @click="toggleTheme" />
         </i>
@@ -16,7 +18,6 @@
     </div>
   </header>
 </template>
-
 <script>
 import { ref } from 'vue';
 
@@ -54,9 +55,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   transition: border-bottom 0.5s ease;
-
   padding: 1.3em 64px;
   border-bottom: 1px solid rgb(243, 244, 246);
 
@@ -68,11 +67,12 @@ export default {
       color: #333;
 
       span.emoji {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
     }
+
     span {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
   }
 
