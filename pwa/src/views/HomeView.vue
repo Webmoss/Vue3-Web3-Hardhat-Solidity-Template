@@ -10,8 +10,9 @@
         <div class="right">
           <h1>Hear It, See It, Live it.</h1>
           <p>
-            Stream your favorite Audio/Media directly from artists and content creators on the
-            blockchain. Subscribe and follow to receive special rewards and earn NFT's.
+            Stream your favorite Audio/Media directly from content creators on the blockchain.
+            Subscribe and follow your favorite artists, earn NFT's, receive bonus content and
+            additional rewards.
           </p>
         </div>
       </section>
@@ -20,58 +21,52 @@
         <div class="row">
           <div class="left">
             <p>
-              Mojo uploads your files to Interplanetary File System (<a href="https://infura.io/product/ipfs"
-                target="_blank" rel="noopener">IPFS</a>) Network. File uploads can never get deleted, hacked, edited and
-              never saved to any
-              server (100% decentralized). Share your content by using a hash / cid (content
-              identifier)
+              Upload your audio/media files with Mojo to the Interplanetary File System (<a
+                href="https://infura.io/product/ipfs" target="_blank" rel="noopener">IPFS</a>) Network. Your content can
+              never get deleted, hacked, edited and will never get
+              saved to any server (100% decentralized). Share your content by using a unique hash or
+              content identifier (CID)
             </p>
           </div>
           <div class="right">
             <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
-            <button v-else className="stream-button">🎧 Stream Now</button>
+            <button @click="$router.push('stream')" v-else className="stream-button">
+              Let's Stream 📹
+            </button>
           </div>
         </div>
       </section>
-      <section id="about">
-        <h2>About</h2>
+      <section id="stream">
         <div class="left">
-          <p>
-            🎧 Mojo is an Instant File Sharing powered by IPFS Protocol. Build with
-            <a href="https://v3.vuejs.org/" target="_blank" rel="noopener">Vue 3</a> and
-            <a href="https://vitejs.dev/" target="_blank" rel="noopener">ViteJS</a>.
-          </p>
+          <h2>Find your groove</h2>
+          <ul class="category-list">
+            <li v-for="category of categories" :key="category" @click="selectCategory(category)"
+              :class="categorySelectedId === category.id ? 'li-active' : ''">
+              <PlayButtonWhite v-if="categorySelectedId === category.id" class="category-list-play-button" />{{
+                  category.label
+              }}
+            </li>
+          </ul>
         </div>
         <div class="right">
-          <p>
-            🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
-            (IPFS) Network using
-            <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
-            File uploads cannot be deleted, hacked, edited, never saved to any server
-            (decentralized) + are only accessable by using a hash / cid (content identifier).
-          </p>
+          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
         </div>
       </section>
       <section id="tracks">
-        <h2>Latest Tracks</h2>
-        <div class="left">
-          <p>
-            🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
-            (IPFS) Network using
-            <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
-            File uploads cannot be deleted, hacked, edited, never saved to any server
-            (decentralized) + are only accessable by using a hash / cid (content identifier).
-          </p>
+        <h2>Latest Playlists</h2>
+        <div class="row">
+          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
         </div>
-        <div class="right"></div>
       </section>
     </div>
   </section>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import ConnectWalletButton from '../components/ConnectWalletButton.vue';
+import PlayButtonWhite from '../components/icons/PlayButtonWhite.vue';
+import TrackPlayer from '../components/TrackPlayer.vue';
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
@@ -94,6 +89,34 @@ async function checkIfWalletIsConnected() {
   }
 }
 
+/* Track Player */
+const categories = ref([
+  { id: 1, label: 'Fresh Jams' },
+  { id: 2, label: 'Dance & Electronica' },
+  { id: 3, label: 'Pop' },
+  { id: 4, label: 'Jazz & Classical' },
+  { id: 5, label: 'World & Ethnic' },
+  { id: 6, label: 'Cinematic & Soundscapes' },
+  { id: 7, label: 'More' },
+]);
+
+const categorySelectedId = ref(1);
+const categoryTracks = ref(null);
+
+function selectCategory(category) {
+  console.log('Selected Category:', category);
+  categorySelectedId.value = category.id;
+  console.log('categorySelectedId:', categorySelectedId.value);
+}
+async function fetchData() {
+  categoryTracks.value = null;
+  const res = await fetch(`./tracks/${categorySelectedId.value}.json`);
+  console.log('Tracks Loaded:', res);
+  categoryTracks.value = await res.json();
+}
+fetchData();
+watch(categorySelectedId, fetchData);
+
 onMounted(() => {
   checkIfWalletIsConnected();
   console.log('currentAccount: ', currentAccount);
@@ -101,6 +124,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/variables.scss';
+@import '../assets/styles/mixins.scss';
+
 section#content {
   position: relative;
   height: 100%;
@@ -116,25 +142,41 @@ section#content {
       background: #ffca28;
       border-bottom: 1px solid #1a1a1a;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-content: center;
       align-items: center;
-      justify-content: space-between;
-      padding: 20px;
+      justify-content: center;
+      padding: 60px 60px 60px 0;
+
+      @include breakpoint($medium) {
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-between;
+        padding: 60px 60px 60px 0;
+      }
 
       .left {
-        width: 55%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-content: center;
         justify-content: center;
-        padding: 20px;
+        padding: 0;
+
+        @include breakpoint($medium) {
+          width: 55%;
+        }
 
         .player-graphic {
           width: 100%;
           margin: 0 auto;
-          padding: 0;
+          padding: 0 10px;
           overflow: hidden;
+
+          @include breakpoint($medium) {
+            padding: 0;
+          }
 
           img,
           svg {
@@ -147,11 +189,19 @@ section#content {
       }
 
       .right {
-        width: 45%;
+        width: 100%;
         display: flex;
         flex-direction: column;
-        align-content: flex-start;
-        justify-content: flex-start;
+        align-content: center;
+        justify-content: center;
+        padding: 0 0 0 20px;
+
+        @include breakpoint($medium) {
+          width: 45%;
+          align-content: flex-start;
+          justify-content: flex-start;
+          padding: 0 0 0 20px;
+        }
       }
 
       h1 {
@@ -189,33 +239,47 @@ section#content {
       flex-direction: column;
       align-content: center;
       justify-content: center;
-      padding: 20px 20px 80px 20px;
+      padding: 20px 60px 60px;
 
       .row {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-content: center;
         justify-content: center;
         align-items: center;
+
+        @include breakpoint($medium) {
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        }
       }
 
       .left {
-        width: 50%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-content: center;
         justify-content: center;
         align-items: center;
-        padding: 0 100px;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
       }
 
       .right {
-        width: 50%;
+        width: 100%;
         display: flex;
         flex-direction: row;
         align-content: center;
         justify-content: center;
         align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
       }
 
       h2 {
@@ -243,43 +307,50 @@ section#content {
       p {
         line-height: 1.7;
         margin-bottom: 20px;
-      }
-
-      .graphic {
-        width: 100%;
+        text-align: center;
       }
     }
 
-    section#about {
+    section#stream {
       color: #212121;
       background: #1c8bfe;
       display: flex;
       flex-direction: column;
       align-content: center;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding: 20px;
 
-      .left {
-        width: 70%;
-        display: flex;
+      @include breakpoint($medium) {
         flex-direction: row;
         align-content: center;
+        align-items: flex-start;
         justify-content: center;
+      }
+
+      .left {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 50px 20px 60px 60px;
+
+        @include breakpoint($medium) {
+          width: 29%;
+        }
       }
 
       .right {
-        width: 30%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
+        width: 100%;
+        display: inline-block;
+
+        padding: 40px 20px;
       }
 
-      h1 {
-        img {
-          display: inline-block;
-        }
+      h2 {
+        font-size: 2.45rem;
+        margin: 0;
       }
 
       a {
@@ -303,6 +374,47 @@ section#content {
         line-height: 1.7;
         margin-bottom: 20px;
       }
+
+      ul.category-list {
+        list-style-type: none;
+        list-style-position: outside;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 0;
+        border-top: 1px solid #1a1a1a;
+
+        li {
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 1.75rem;
+          padding-top: 0.75rem;
+          padding-bottom: 0.75rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
+          border-bottom: 1px solid #1a1a1a;
+
+          &:hover {
+            color: #fff;
+            cursor: pointer;
+          }
+
+          &:active {
+            color: #fff;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .li-active {
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .category-list-play-button {
+        margin: 0 5px 0 -15px;
+      }
     }
 
     section#tracks {
@@ -313,22 +425,11 @@ section#content {
       align-content: center;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 60px;
 
-      .left {
-        width: 30%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
-      }
-
-      .right {
-        width: 70%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
+      .row {
+        width: 100%;
+        display: inline-block;
       }
 
       h2 {
@@ -351,11 +452,6 @@ section#content {
 
           border-bottom: none;
         }
-      }
-
-      p {
-        line-height: 1.7;
-        margin-bottom: 20px;
       }
     }
   }

@@ -13,7 +13,7 @@ const router = createRouter({
         behavior: 'smooth',
       });
     } else {
-      return savedPosition || { x: 0, y: 0 };
+      return savedPosition || { top: 0, left: 0 };
     }
   },
   history: createWebHistory(import.meta.env.BASE_URL),

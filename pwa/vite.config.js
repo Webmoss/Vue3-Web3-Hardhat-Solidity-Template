@@ -25,9 +25,9 @@ export default defineConfig({
     Icons(),
     VitePWA({
       manifest: {
-        name: 'Mojo File Sharing',
+        name: 'Mojo',
         short_name: 'Mojo',
-        description: 'Instant File Sharing powered by IPFS Protocol',
+        description: 'Content Sharing powered by IPFS Protocol',
         theme_color: '#212121',
         registerType: 'autoUpdate',
         includeAssets: ['/favicon.svg'],
