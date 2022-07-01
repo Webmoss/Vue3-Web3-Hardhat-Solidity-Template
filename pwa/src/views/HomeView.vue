@@ -10,10 +10,16 @@
         <div class="right">
           <h1>Hear It, See It, Live it.</h1>
           <p>
-            Stream your favorite Audio/Media directly from content creators on the blockchain.
-            Subscribe and follow your favorite artists, earn NFT's, receive bonus content and
-            additional rewards.
+            Get you Mojo on and stream Audio/Media directly from your favorite content creators on
+            the blockchain. Subscribe and follow artists and digital content creators, purchase a
+            custom NFT's and receive additional content, rewards and more.
           </p>
+        </div>
+      </section>
+      <section id="stream">
+        <h2>Latest Tracks</h2>
+        <div class="row">
+          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
         </div>
       </section>
       <section id="connect">
@@ -22,8 +28,11 @@
           <div class="left">
             <p>
               Upload your audio/media files with Mojo to the Interplanetary File System (<a
-                href="https://infura.io/product/ipfs" target="_blank" rel="noopener">IPFS</a>) Network. Your content can
-              never get deleted, hacked, edited and will never get
+                href="https://infura.io/product/ipfs"
+                target="_blank"
+                rel="noopener"
+                >IPFS</a
+              >) Network. Your content can never get deleted, hacked, edited and will never get
               saved to any server (100% decentralized). Share your content by using a unique hash or
               content identifier (CID)
             </p>
@@ -36,26 +45,17 @@
           </div>
         </div>
       </section>
-      <section id="stream">
-        <div class="left">
-          <h2>Find your groove</h2>
-          <ul class="category-list">
-            <li v-for="category of categories" :key="category" @click="selectCategory(category)"
-              :class="categorySelectedId === category.id ? 'li-active' : ''">
-              <PlayButtonWhite v-if="categorySelectedId === category.id" class="category-list-play-button" />{{
-                  category.label
-              }}
-            </li>
-          </ul>
-        </div>
-        <div class="right">
-          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
-        </div>
-      </section>
       <section id="tracks">
-        <h2>Latest Playlists</h2>
         <div class="row">
-          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
+          <div class="left">
+            <h1>Royalties</h1>
+            <h2>Your streams directly support artists.</h2>
+          </div>
+          <div class="right">
+            <div class="royalty-graphic">
+              <img src="../assets/images/RoyaltyFees.jpeg" alt="Royalty Fees" />
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -63,59 +63,50 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 import ConnectWalletButton from '../components/ConnectWalletButton.vue';
-import PlayButtonWhite from '../components/icons/PlayButtonWhite.vue';
 import TrackPlayer from '../components/TrackPlayer.vue';
+
+const notyf = inject('notyf');
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
-  const { ethereum } = window;
+  try {
+    /*
+     * First make sure we have access to window.ethereum
+     */
+    const { ethereum } = window;
 
-  if (!ethereum) {
-    console.log('Error: No ethereum window object');
-    return;
-  } else {
-    console.log('we have an ethereum object', ethereum);
-  }
+    if (!ethereum) {
+      notyf.error(`Please connect Metamask to continue!`);
+      console.log('Error: No ethereum window object');
+      return;
+    } else {
+      console.log('We have an ethereum object', ethereum);
+    }
 
-  const accounts = await ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
 
-  if (accounts.length !== 0) {
-    const account = accounts[0];
-    currentAccount.value = account;
-  } else {
-    console.log('No authorized accounts');
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      currentAccount.value = account;
+    } else {
+      console.log('No authorized accounts');
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
-/* Track Player */
-const categories = ref([
-  { id: 1, label: 'Fresh Jams' },
-  { id: 2, label: 'Dance & Electronica' },
-  { id: 3, label: 'Pop' },
-  { id: 4, label: 'Jazz & Classical' },
-  { id: 5, label: 'World & Ethnic' },
-  { id: 6, label: 'Cinematic & Soundscapes' },
-  { id: 7, label: 'More' },
-]);
-
-const categorySelectedId = ref(1);
 const categoryTracks = ref(null);
 
-function selectCategory(category) {
-  console.log('Selected Category:', category);
-  categorySelectedId.value = category.id;
-  console.log('categorySelectedId:', categorySelectedId.value);
-}
 async function fetchData() {
   categoryTracks.value = null;
-  const res = await fetch(`./tracks/${categorySelectedId.value}.json`);
+  const res = await fetch(`./tracks/1.json`);
   console.log('Tracks Loaded:', res);
   categoryTracks.value = await res.json();
 }
 fetchData();
-watch(categorySelectedId, fetchData);
 
 onMounted(() => {
   checkIfWalletIsConnected();
@@ -232,99 +223,21 @@ section#content {
       }
     }
 
-    section#connect {
-      color: #1a1a1a;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      align-content: center;
-      justify-content: center;
-      padding: 20px 60px 60px;
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-
-        @include breakpoint($medium) {
-          flex-direction: row;
-          align-content: center;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-
-      .left {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-
-        @include breakpoint($medium) {
-          width: 50%;
-        }
-      }
-
-      .right {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-
-        @include breakpoint($medium) {
-          width: 50%;
-        }
-      }
-
-      h2 {
-        font-size: 2.85rem;
-        text-align: center;
-      }
-
-      a {
-        color: #1a1a1a;
-        font-weight: bold;
-        border-bottom: 1px solid #1a1a1a;
-        text-decoration: none;
-
-        &.author {
-          padding: 6px 12px;
-          border-radius: 8px;
-          background-color: var(--gradient-100);
-          color: var(--icon-color);
-          font-size: 0.85rem;
-
-          border-bottom: none;
-        }
-      }
-
-      p {
-        line-height: 1.7;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-    }
-
     section#stream {
-      color: #212121;
+      color: #fff;
       background: #1c8bfe;
       display: flex;
       flex-direction: column;
       align-content: center;
       align-items: center;
       justify-content: center;
+      padding: 60px;
 
-      @include breakpoint($medium) {
-        flex-direction: row;
-        align-content: center;
-        align-items: flex-start;
-        justify-content: center;
+      .row {
+        width: 100%;
+        max-width: 960px;
+        display: inline-block;
+        margin: 40px auto;
       }
 
       .left {
@@ -343,14 +256,26 @@ section#content {
 
       .right {
         width: 100%;
-        display: inline-block;
-
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
         padding: 40px 20px;
+        .track-list {
+          width: 100%;
+          max-width: 960px;
+          display: inline-block;
+          margin: 0 auto;
+        }
       }
 
       h2 {
         font-size: 2.45rem;
         margin: 0;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
       }
 
       a {
@@ -417,30 +342,68 @@ section#content {
       }
     }
 
-    section#tracks {
-      color: #fff;
-      background: #1a1a1a;
+    section#connect {
+      color: #1a1a1a;
+      background: #fff;
       display: flex;
       flex-direction: column;
       align-content: center;
-      align-items: center;
       justify-content: center;
-      padding: 60px;
+      padding: 20px 60px 60px;
 
       .row {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .left {
         width: 100%;
-        display: inline-block;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
+      }
+
+      .right {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
       }
 
       h2 {
         font-size: 2.85rem;
         text-align: center;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
       }
 
       a {
-        color: var(--contrast-color);
+        color: #1a1a1a;
         font-weight: bold;
-        border-bottom: 1px solid var(--contrast-color);
+        border-bottom: 1px solid #1a1a1a;
         text-decoration: none;
 
         &.author {
@@ -452,6 +415,119 @@ section#content {
 
           border-bottom: none;
         }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    }
+
+    section#tracks {
+      color: #fff;
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      padding: 60px;
+
+      .row {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .left {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
+      }
+
+      .right {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
+
+        .royalty-graphic {
+          width: 100%;
+          margin: 0 auto;
+          padding: 0 10px;
+          overflow: hidden;
+
+          @include breakpoint($medium) {
+            padding: 0;
+          }
+
+          img,
+          svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            overflow: hidden;
+          }
+        }
+      }
+
+      h1 {
+        font-size: 2.85rem;
+        text-align: center;
+        margin-bottom: 0;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+      }
+
+      h2 {
+        font-size: 2.25rem;
+        text-align: center;
+      }
+
+      a {
+        color: #1a1a1a;
+        font-weight: bold;
+        border-bottom: 1px solid #1a1a1a;
+        text-decoration: none;
+
+        &.author {
+          padding: 6px 12px;
+          border-radius: 8px;
+          background-color: var(--gradient-100);
+          color: var(--icon-color);
+          font-size: 0.85rem;
+
+          border-bottom: none;
+        }
+      }
+
+      p {
+        line-height: 1.7;
+        margin-bottom: 20px;
+        text-align: center;
       }
     }
   }

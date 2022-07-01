@@ -5,16 +5,27 @@
         <div class="left">
           <h2>Find your groove</h2>
           <ul class="category-list">
-            <li v-for="category of categories" :key="category" @click="selectCategory(category)"
-              :class="categorySelectedId === category.id ? 'li-active' : ''">
-              <PlayButtonWhite v-if="categorySelectedId === category.id" class="category-list-play-button" />{{
-                  category.label
-              }}
+            <li
+              v-for="category of categories"
+              :key="category"
+              @click="selectCategory(category)"
+              :class="categorySelectedId === category.id ? 'li-active' : ''"
+            >
+              <PlayButtonWhite
+                v-if="categorySelectedId === category.id"
+                class="category-list-play-button"
+              />{{ category.label }}
             </li>
           </ul>
         </div>
         <div class="right">
-          <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
+          <div class="track-list">
+            <TrackPlayer
+              v-for="track in categoryTracks"
+              :track="track"
+              :key="track.id"
+            ></TrackPlayer>
+          </div>
         </div>
       </section>
     </div>
@@ -22,29 +33,38 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, inject } from 'vue';
 import PlayButtonWhite from '../components/icons/PlayButtonWhite.vue';
 import TrackPlayer from '../components/TrackPlayer.vue';
 
+const notyf = inject('notyf');
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
-  const { ethereum } = window;
+  try {
+    /*
+     * First make sure we have access to window.ethereum
+     */
+    const { ethereum } = window;
 
-  if (!ethereum) {
-    console.log('Error: No ethereum window object');
-    return;
-  } else {
-    console.log('we have an ethereum object', ethereum);
-  }
+    if (!ethereum) {
+      notyf.error(`Please connect Metamask to continue!`);
+      console.log('Error: No ethereum window object');
+      return;
+    } else {
+      console.log('We have an ethereum object', ethereum);
+    }
 
-  const accounts = await ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
 
-  if (accounts.length !== 0) {
-    const account = accounts[0];
-    currentAccount.value = account;
-  } else {
-    console.log('No authorized accounts');
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      currentAccount.value = account;
+    } else {
+      console.log('No authorized accounts');
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -105,6 +125,7 @@ section#content {
       align-content: center;
       align-items: center;
       justify-content: center;
+      padding: 60px 20px 0;
 
       @include breakpoint($medium) {
         flex-direction: row;
@@ -129,9 +150,18 @@ section#content {
 
       .right {
         width: 100%;
-        display: inline-block;
-
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
         padding: 40px 20px;
+        .track-list {
+          width: 100%;
+          max-width: 960px;
+          display: inline-block;
+          margin: 0 auto;
+        }
       }
 
       h2 {

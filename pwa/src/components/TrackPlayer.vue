@@ -14,7 +14,14 @@
       {{ track.title }}
     </div>
     <div class="track-time">
-      <input v-model="playbackTime" type="range" min="0" :max="audioDuration" id="position" name="position" />
+      <input
+        v-model="playbackTime"
+        type="range"
+        min="0"
+        :max="audioDuration"
+        id="position"
+        name="position"
+      />
     </div>
   </div>
 </template>
@@ -188,7 +195,7 @@ export default {
   display: block;
   box-sizing: border-box;
   position: relative;
-  width: 320px;
+  width: 300px;
   height: 180px;
   background: #f4f4f4;
   border: 2px solid #f4f4f4;

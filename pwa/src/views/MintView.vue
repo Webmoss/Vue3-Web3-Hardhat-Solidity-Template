@@ -1,49 +1,59 @@
 <template>
   <section id="content">
     <div class="main">
-      <div class="main-content">
-        <section id="mint">
-          <h1>Mint NFT</h1>
-          <p>
-            🎧 Mojo is a web-based application that uploads your files to Interplanetary File System
-            (IPFS) Network using
-            <a href="https://infura.io/product/ipfs" target="_blank" rel="noopener">Infura API</a>.
-            File uploads cannot be deleted, hacked, edited, never saved to any server
-            (decentralized) + are only accessable by using a hash / cid (content identifier).
-          </p>
-          <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
-          <InputForm v-if="currentAccount" />
-        </section>
-      </div>
+      <section id="connect">
+        <h2>Mint NFT</h2>
+        <div class="row">
+          <div class="left">
+            <p>
+              Mint NFT's for your followers and subscribers allowing them to unlock bonus content
+              and earn additional rewards.'
+            </p>
+          </div>
+          <div class="right">
+            <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
+            <InputForm v-if="currentAccount" />
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject } from 'vue';
 
 import ConnectWalletButton from '../components/ConnectWalletButton.vue';
 import InputForm from '../components/input-form.vue';
 
+const notyf = inject('notyf');
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
-  const { ethereum } = window;
+  try {
+    /*
+     * First make sure we have access to window.ethereum
+     */
+    const { ethereum } = window;
 
-  if (!ethereum) {
-    console.log('Error: No ethereum window object');
-    return;
-  } else {
-    console.log('we have an ethereum object', ethereum);
-  }
+    if (!ethereum) {
+      notyf.error(`Please connect Metamask to continue!`);
+      console.log('Error: No ethereum window object');
+      return;
+    } else {
+      console.log('We have an ethereum object', ethereum);
+    }
 
-  const accounts = await ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
 
-  if (accounts.length !== 0) {
-    const account = accounts[0];
-    currentAccount.value = account;
-  } else {
-    console.log('No authorized accounts');
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      currentAccount.value = account;
+    } else {
+      console.log('No authorized accounts');
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -53,43 +63,79 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/styles/variables.scss';
+@import '../assets/styles/mixins.scss';
+
 section#content {
   position: relative;
   height: 100%;
 
   .main {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-
+    width: 100%;
     height: 100%;
+    margin: 0 auto;
+    padding: 0;
 
-    .main-content {
-      position: absolute;
-      z-index: 3;
-
+    section#connect {
+      height: 100%;
+      color: #1a1a1a;
+      background: #fff;
       display: flex;
-      border-radius: 1em;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      padding: 20px 60px 60px;
 
-      section {
-        width: 70vw;
-        height: 414px;
-      }
-    }
+      .row {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
 
-    section#mint {
-      h1 {
-        img {
-          display: inline-block;
+        @include breakpoint($medium) {
+          flex-direction: row;
+          align-content: center;
+          justify-content: center;
+          align-items: center;
         }
       }
 
+      .left {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
+      }
+
+      .right {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+
+        @include breakpoint($medium) {
+          width: 50%;
+        }
+      }
+
+      h2 {
+        font-size: 2.85rem;
+        text-align: center;
+      }
+
       a {
-        color: var(--contrast-color);
+        color: #1a1a1a;
         font-weight: bold;
-        border-bottom: 1px solid var(--contrast-color);
+        border-bottom: 1px solid #1a1a1a;
         text-decoration: none;
 
         &.author {
@@ -105,12 +151,8 @@ section#content {
 
       p {
         line-height: 1.7;
-      }
-
-      .icon-love {
-        color: #e91e63;
-        display: inline;
-        vertical-align: middle;
+        margin-bottom: 20px;
+        text-align: center;
       }
     }
   }

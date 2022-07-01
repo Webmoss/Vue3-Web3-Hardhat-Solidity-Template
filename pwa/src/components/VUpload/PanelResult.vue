@@ -16,11 +16,18 @@
             </div>
             <div class="item-detail">
               <span class="item-detail--title" :title="item.file.name">{{ item.file.name }}</span>
-              <span class="item-detail--subtitle">{{ fileSize(item.file.size) }} • {{ item.file.type }}</span>
+              <span class="item-detail--subtitle"
+                >{{ fileSize(item.file.size) }} • {{ item.file.type }}</span
+              >
             </div>
             <div class="item-action">
-              <a v-if="!!item.shorten" title="Open Shorten Link" target="_blank" :href="generateLink(item, true)"
-                rel="noopener">
+              <a
+                v-if="!!item.shorten"
+                title="Open Shorten Link"
+                target="_blank"
+                :href="generateLink(item, true)"
+                rel="noopener"
+              >
                 <i-ri-link-unlink-m class="icon-color" />
               </a>
               <a v-else title="Generate Shorten Link" @click="shortenLink(item)">
@@ -34,8 +41,13 @@
           </div>
           <div class="item-cid">
             <label>
-              <input class="input-cid" type="text" readonly @focus="$event.target.select()"
-                :value="generateLink(item)" />
+              <input
+                class="input-cid"
+                type="text"
+                readonly
+                @focus="$event.target.select()"
+                :value="generateLink(item)"
+              />
             </label>
 
             <a title="Copy to clipboard" @click="copyFileLink(item)">

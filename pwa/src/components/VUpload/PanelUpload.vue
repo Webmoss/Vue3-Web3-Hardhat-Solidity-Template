@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { computed, inject, ref } from 'vue';
+import { ref, computed, inject } from 'vue';
 
 import { useStore } from '../../store';
 import { uploadBlob } from '../../services/ipfs.js';
