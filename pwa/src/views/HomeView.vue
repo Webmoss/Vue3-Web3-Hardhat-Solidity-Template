@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="right">
-          <h1>Hear It, See It, Live it.</h1>
+          <h1>Hear it, See it, Live it.</h1>
           <p>
             Get you Mojo on and stream Audio/Media directly from your favorite content creators on
             the blockchain. Subscribe and follow artists and digital content creators, purchase a
@@ -45,11 +45,14 @@
           </div>
         </div>
       </section>
-      <section id="tracks">
+      <section id="royalties">
         <div class="row">
           <div class="left">
             <h1>Royalties</h1>
-            <h2>Your streams directly support artists.</h2>
+            <h2>
+              Your streams directly support
+              <span class="yellow">artists &amp; content creators</span>.
+            </h2>
           </div>
           <div class="right">
             <div class="royalty-graphic">
@@ -68,7 +71,7 @@ import ConnectWalletButton from '../components/ConnectWalletButton.vue';
 import TrackPlayer from '../components/TrackPlayer.vue';
 
 const notyf = inject('notyf');
-const currentAccount = ref();
+const currentAccount = ref('');
 
 async function checkIfWalletIsConnected() {
   try {
@@ -424,7 +427,7 @@ section#content {
       }
     }
 
-    section#tracks {
+    section#royalties {
       color: #fff;
       background: #1a1a1a;
       display: flex;
@@ -494,6 +497,7 @@ section#content {
       }
 
       h1 {
+        color: #2bb5f0;
         font-size: 2.85rem;
         text-align: center;
         margin-bottom: 0;
@@ -505,6 +509,9 @@ section#content {
       h2 {
         font-size: 2.25rem;
         text-align: center;
+        .yellow {
+          color: #ffca28;
+        }
       }
 
       a {

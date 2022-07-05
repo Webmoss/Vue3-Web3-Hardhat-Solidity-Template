@@ -12,7 +12,7 @@
           </div>
           <div class="right">
             <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
-            <InputForm v-if="currentAccount" />
+            <NftForm v-if="currentAccount" />
           </div>
         </div>
       </section>
@@ -24,7 +24,7 @@
 import { onMounted, ref, inject } from 'vue';
 
 import ConnectWalletButton from '../components/ConnectWalletButton.vue';
-import InputForm from '../components/input-form.vue';
+import NftForm from '../components/NftForm.vue';
 
 const notyf = inject('notyf');
 const currentAccount = ref();

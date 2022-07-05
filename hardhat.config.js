@@ -1,9 +1,10 @@
-require('dotenv').config();
 require('@nomiclabs/hardhat-waffle');
+require("@nomiclabs/hardhat-etherscan");
+require('dotenv').config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
+task('accounts', 'Prints the list of MetaMask accounts', async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
@@ -18,7 +19,8 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: 'hardhat',
+  solidity: "0.8.4",
+  defaultNetwork: 'alchemy',
   networks: {
     localhost: {
       url: 'http://127.0.0.1:8545',
@@ -30,7 +32,7 @@ module.exports = {
     alchemy: {
       url: process.env.ALCHEMY_API_URL,
       key: process.env.ALCHEMY_API_KEY,
-      accounts: [process.env.DEV_ACCOUNT],
+      accounts: [process.env.PRIVATE_KEY],
     },
     testnet: {
       url: 'https://data-seed-prebsc-1-s1.binance.org:8545',
@@ -102,7 +104,11 @@ module.exports = {
       },
     },
   },
-  solidity: '0.8.4',
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: "9Z9SFMXZ8M7VAZPSY13Q8GHRUKZSVBWYYD",
+  },
   paths: {
     sources: './contracts',
     tests: './test',

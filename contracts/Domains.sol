@@ -7,7 +7,7 @@ pragma solidity ^0.8.4;
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 
-// We import helper functions for Soliddity
+// We import helper functions for Solidity
 import {StringUtils} from './libraries/StringUtils.sol';
 import {Base64} from './libraries/Base64.sol';
 
@@ -46,6 +46,7 @@ contract Domains is ERC721URIStorage {
 
         // Combine the name passed into the function  with the TLD
         string memory _name = string(abi.encodePacked(name, '.', tld));
+        
         // Create the SVG (image) for the NFT with the name
         string memory finalSvg = string(abi.encodePacked(svgPartOne, _name, svgPartTwo));
         uint256 newRecordId = _tokenIds.current();
