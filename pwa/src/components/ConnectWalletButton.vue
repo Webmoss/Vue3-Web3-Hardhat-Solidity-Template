@@ -1,9 +1,14 @@
 <script setup>
 defineProps({
   currentAccount: String,
+  btnSize: {
+    type: String,
+    required: false,
+  },
 });
 /* Define Emits */
 const emit = defineEmits(['update:modelValue']);
+
 /* connectWallet method */
 async function connectWallet() {
   const { ethereum } = window;
@@ -27,6 +32,11 @@ async function connectWallet() {
 </script>
 <template>
   <div class="connect-wallet-container">
-    <button @click="connectWallet" class="connect-wallet-button">🎧 Connect Wallet</button>
+    <button v-if="btnSize === 'large'" @click="connectWallet" class="connect-wallet-button">
+      🎧 Connect Wallet
+    </button>
+    <button v-if="btnSize === 'small'" @click="connectWallet" class="connect-wallet-small-button">
+      🎧 Connect
+    </button>
   </div>
 </template>

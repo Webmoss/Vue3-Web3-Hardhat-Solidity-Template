@@ -146,8 +146,38 @@ code {
   cursor: pointer;
 }
 
+.connect-wallet-small-button {
+  color: white;
+  background-color: #a200d6;
+  font-size: 14px;
+  font-weight: bold;
+  width: auto;
+  height: 35px;
+  border: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 .stream-button {
-  color: #1a1a1a;
+  color: #fff;
+  background-color: #a200d6;
+  font-size: 18px;
+  font-weight: bold;
+  width: auto;
+  height: 55px;
+  border: 0;
+  padding-left: 60px;
+  padding-right: 60px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.upload-button {
+  color: #fff;
   background-color: #1ce7b4;
   font-size: 18px;
   font-weight: bold;
@@ -157,6 +187,22 @@ code {
   padding-left: 60px;
   padding-right: 60px;
   border-radius: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.mint-media-button {
+  color: #fff;
+  background-color: #1c8bfe;
+  font-size: 18px;
+  font-weight: bold;
+  width: auto;
+  height: 55px;
+  border: 0;
+  padding-left: 60px;
+  padding-right: 60px;
+  border-radius: 10px;
+  margin-bottom: 15px;
   cursor: pointer;
 }
 

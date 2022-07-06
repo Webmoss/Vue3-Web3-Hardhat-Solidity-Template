@@ -10,12 +10,32 @@ export const useStore = defineStore({
   id: 'store',
   state() {
     return {
+      counter: 0,
       user: {},
       playlists: [],
       playResults: db.data.playResults,
       files: [],
       results: db.data.results,
+      newArrivals: [],
+      fetching: false,
     };
+  },
+  getters: {
+    getCount(state) {
+      return state.counter;
+    },
+    user(state) {
+      return state.user;
+    },
+    playlists(state) {
+      return state.playlists;
+    },
+    results(state) {
+      return state.newArrivals;
+    },
+    isFetching(state) {
+      return state.fetching;
+    },
   },
   actions: {
     updateUser(...user) {
@@ -63,6 +83,24 @@ export const useStore = defineStore({
 
       db.data.results = [...this.results];
       db.write();
+    },
+    /**
+     * Fetch New Arrivales
+     * @param {String} cid
+     * @param {String} link
+     */
+    async fetchNewArrivals() {
+      this.fetching = true;
+      const response = await fetch('/tracks/new-arrivals.json');
+      try {
+        const result = await response.json();
+        this.newArrivals = result;
+      } catch (err) {
+        this.newArrivals = [];
+        console.error('Error loading new arrivals:', err);
+        return err;
+      }
+      this.fetching = false;
     },
   },
 });

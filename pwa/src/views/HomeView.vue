@@ -38,9 +38,19 @@
             </p>
           </div>
           <div class="right">
-            <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" />
-            <button @click="$router.push('stream')" v-else className="stream-button">
-              Let's Stream 📹
+            <ConnectWalletButton v-model="currentAccount" v-if="!currentAccount" btnSize="large" />
+            <button @click="$router.push('stream')" v-if="currentAccount" className="stream-button">
+              Let's Stream 🎶
+            </button>
+            <button @click="$router.push('upload')" v-if="currentAccount" className="upload-button">
+              Upload Files 🎤
+            </button>
+            <button
+              @click="$router.push('mint')"
+              v-if="currentAccount"
+              className="mint-media-button"
+            >
+              Create Content 🧪
             </button>
           </div>
         </div>
@@ -66,11 +76,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref, inject } from 'vue';
+import { onMounted, ref } from 'vue';
+import { Notyf } from 'notyf';
+/* Components */
 import ConnectWalletButton from '../components/ConnectWalletButton.vue';
 import TrackPlayer from '../components/TrackPlayer.vue';
 
-const notyf = inject('notyf');
+// Create an instance of Notyf
+var notyf = new Notyf();
+
 const currentAccount = ref('');
 
 async function checkIfWalletIsConnected() {
@@ -385,7 +399,7 @@ section#content {
       .right {
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-content: center;
         justify-content: center;
         align-items: center;

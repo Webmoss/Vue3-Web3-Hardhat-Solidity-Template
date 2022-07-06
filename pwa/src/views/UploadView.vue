@@ -8,14 +8,13 @@
     </div>
   </section>
 </template>
-
 <script>
 import { provide } from 'vue';
 import { Notyf } from 'notyf';
-
+/* Components */
 import PanelUpload from '../components/VUpload/PanelUpload.vue';
 import PanelResult from '../components/VUpload/PanelResult.vue';
-
+/* LFG */
 export default {
   name: 'UploadView',
   components: {
@@ -42,12 +41,10 @@ export default {
         },
       ],
     });
-
     provide('notyf', NotfyProvider);
   },
 };
 </script>
-
 <style lang="scss" scoped>
 section#content {
   position: relative;
@@ -59,7 +56,7 @@ section#content {
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: #212121;
+    color: #1a1a1a;
     background: #ffca28;
 
     .main-content {

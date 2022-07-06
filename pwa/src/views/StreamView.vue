@@ -33,11 +33,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, inject } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { Notyf } from 'notyf';
+/* Components */
 import PlayButtonWhite from '../components/icons/PlayButtonWhite.vue';
 import TrackPlayer from '../components/TrackPlayer.vue';
+// Create an instance of Notyf
+var notyf = new Notyf();
 
-const notyf = inject('notyf');
 const currentAccount = ref();
 
 async function checkIfWalletIsConnected() {
@@ -93,6 +96,7 @@ async function fetchData() {
   console.log('Tracks Loaded:', res);
   categoryTracks.value = await res.json();
 }
+
 fetchData();
 watch(categorySelectedId, fetchData);
 
