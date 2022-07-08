@@ -53,7 +53,7 @@ body {
     --contrast-color: white;
     --liniear-gradient-color-1: linear-gradient(
       to bottom right,
-      #1ce7b4,
+      #08d0a5,
       #2ad4f5
     );
     --liniear-gradient-color-2: linear-gradient(
@@ -61,7 +61,7 @@ body {
       #a855f7,
       #6366f1
     );
-    --icon-color: #1ce7b4;
+    --icon-color: #08d0a5;
 
     --gradient-100: rgb(234, 240, 255);
     --gradient-200: rgb(224, 230, 252);
@@ -162,6 +162,7 @@ code {
 }
 
 .stream-button {
+  min-width: 320px;
   color: #fff;
   background-color: #a200d6;
   font-size: 18px;
@@ -177,8 +178,9 @@ code {
 }
 
 .upload-button {
+  min-width: 320px;
   color: #fff;
-  background-color: #1ce7b4;
+  background-color: #1c8bfe;
   font-size: 18px;
   font-weight: bold;
   width: auto;
@@ -192,8 +194,9 @@ code {
 }
 
 .mint-media-button {
+  min-width: 320px;
   color: #fff;
-  background-color: #1c8bfe;
+  background-color: #08d0a5;
   font-size: 18px;
   font-weight: bold;
   width: auto;
@@ -361,6 +364,51 @@ code {
         .main-content--shadow {
           width: 100%;
           height: 250px;
+        }
+      }
+    }
+
+    #footer {
+      padding: 0 0 0.8em 0;
+      border-top: none;
+      flex-direction: column;
+
+      .footer-title {
+        width: 100%;
+        margin-bottom: 8px;
+
+        span {
+          font-size: 0.8em;
+        }
+      }
+
+      .footer-menu {
+        width: 100%;
+
+        nav {
+          text-align: left;
+          padding: 8px 0;
+          width: 100%;
+
+          > a {
+            font-size: 0.83em;
+            margin-right: 12px;
+
+            &.active {
+              font-weight: bold;
+            }
+          }
+          > i {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+
+        .icon.icon-lg {
+          position: fixed;
+          top: 1em;
+          right: 1em;
         }
       }
     }

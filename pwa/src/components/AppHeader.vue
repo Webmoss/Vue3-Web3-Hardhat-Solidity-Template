@@ -2,7 +2,6 @@
   <header id="header">
     <div class="header-title">
       <h1><span class="emoji">🎧</span> Mojo</h1>
-      <span>Instant File Sharing powered by IPFS Protocol</span>
     </div>
     <div class="header-menu">
       <nav class="header-navbar">
@@ -103,8 +102,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   transition: border-bottom 0.5s ease;
-  padding: 1em 64px;
   border-bottom: 1px solid #1a1a1a;
+  padding: 1em 64px;
 
   .header-title {
     h1 {
@@ -116,10 +115,6 @@ export default {
       span.emoji {
         font-size: 1.5rem;
       }
-    }
-
-    span {
-      font-size: 0.8rem;
     }
   }
 

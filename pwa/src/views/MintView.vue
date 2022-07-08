@@ -42,7 +42,7 @@
             </section>
           </div>
           <div v-if="!currentAccount" class="left">
-            <p>
+            <p class="connect-message">
               Connect your MetaMask and mint your Audio/Media NFT's for your followers and
               subscribers allowing them to unlock bonus content and earn additional rewards.
             </p>
@@ -54,7 +54,7 @@
           </div>
           <div v-if="currentAccount" class="right">
             <div class="form-container">
-              <h2>Track NFT Details</h2>
+              <h2>NFT Metadata</h2>
               <div class="input-row">
                 <input type="text" placeholder="Name" v-model="name" />
               </div>
@@ -74,16 +74,16 @@
                 <input type="text" v-model="backgroundColor" />
               </div>
               <p class="tld">{{ attributes }}</p>
+              <!-- Button Row -->
+              <div v-if="currentAccount" class="button-container">
+                <button class="mint-button" @click="mintNFT">Mint NFT</button>
+              </div>
+              <!-- END Button Row -->
             </div>
           </div>
           <!-- END Right Side */ -->
         </div>
         <!-- END Top Row -->
-        <!-- Button Row -->
-        <div v-if="currentAccount" class="button-container">
-          <button class="mint-button" @click="mintNFT">Mint</button>
-        </div>
-        <!-- END Button Row -->
       </section>
     </div>
   </section>
@@ -158,13 +158,13 @@ export default {
       if (!name.value) {
         return;
       }
-
       if (name.value.length < 3) {
         alert('NFT name must be longer then 3');
         return;
       }
 
       const price = name.value.length === 3 ? '0.05' : name.value.length === 4 ? '0.03' : '0.01';
+
       console.log('Minting NFT name', name.value, 'with price', price);
 
       try {
@@ -175,10 +175,11 @@ export default {
 
           /* Dev Note: Reset this once Contracts deployed */
           const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
-          console.log('Talk to the wallet and pay gas');
+          console.log('Talk to the wallet and pay gas fees');
 
           let nftTxn = await contract.makeAnEpicNFT();
           console.log('Mining...please wait.');
+
           const receipt = await nftTxn.wait();
           console.log(nftTxn);
           if (receipt.status === 1) {
@@ -197,13 +198,122 @@ export default {
       }
     };
 
+    /**
+     * IPFS Pinning Example - Minty
+     * https://docs.ipfs.io/how-to/mint-nfts-with-ipfs/#minty
+     */
+    // const mintToken = async (ownerAddress, metadataURI) => {
+    //   // The smart contract adds an ipfs:// prefix to all URIs,
+    //   // so make sure to remove it so it doesn't get added twice
+    //   metadataURI = stripIpfsUriPrefix(metadataURI);
+
+    //   // Call the mintToken smart contract function to issue a new token
+    //   // to the given address. This returns a transaction object, but the
+    //   // transaction hasn't been confirmed yet, so it doesn't have our token id.
+    //   const tx = await this.contract.mintToken(ownerAddress, metadataURI);
+
+    //   // The OpenZeppelin base ERC721 contract emits a Transfer event
+    //   // when a token is issued. tx.wait() will wait until a block containing
+    //   // our transaction has been mined and confirmed. The transaction receipt
+    //   // contains events emitted while processing the transaction.
+    //   const receipt = await tx.wait();
+    //   for (const event of receipt.events) {
+    //     if (event.event !== 'Transfer') {
+    //       console.log('ignoring unknown event type ', event.event);
+    //       continue;
+    //     }
+    //     return event.args.tokenId.toString();
+    //   }
+
+    //   throw new Error('unable to get token id');
+    // };
+    // const createNFTFromAssetData = async (content, options) => {
+    //   // add the asset to IPFS
+    //   const filePath = options.path || 'asset.bin';
+    //   const basename = path.basename(filePath);
+
+    //   // When you add an object to IPFS with a directory prefix in its path,
+    //   // IPFS will create a directory structure for you. This is nice, because
+    //   // it gives us URIs with descriptive filenames in them e.g.
+    //   // 'ipfs://bafybeihhii26gwp4w7b7w7d57nuuqeexau4pnnhrmckikaukjuei2dl3fq/cat-pic.png' vs
+    //   // 'ipfs://bafybeihhii26gwp4w7b7w7d57nuuqeexau4pnnhrmckikaukjuei2dl3fq'
+    //   const ipfsPath = '/nft/' + basename;
+    //   const { cid: assetCid } = await this.ipfs.add({ path: ipfsPath, content });
+
+    //   // make the NFT metadata JSON
+    //   const assetURI = ensureIpfsUriPrefix(assetCid) + '/' + basename;
+    //   const metadata = await this.makeNFTMetadata(assetURI, options);
+
+    //   // add the metadata to IPFS
+    //   const { cid: metadataCid } = await this.ipfs.add({
+    //     path: '/nft/metadata.json',
+    //     content: JSON.stringify(metadata),
+    //   });
+    //   const metadataURI = ensureIpfsUriPrefix(metadataCid) + '/metadata.json';
+
+    //   // get the address of the token owner from options,
+    //   // or use the default signing address if no owner is given
+    //   let ownerAddress = options.owner;
+    //   if (!ownerAddress) {
+    //     ownerAddress = await this.defaultOwnerAddress();
+    //   }
+
+    //   // mint a new token referencing the metadata URI
+    //   const tokenId = await this.mintToken(ownerAddress, metadataURI);
+
+    //   // format and return the results
+    //   return {
+    //     tokenId,
+    //     metadata,
+    //     assetURI,
+    //     metadataURI,
+    //     assetGatewayURL: makeGatewayURL(assetURI),
+    //     metadataGatewayURL: makeGatewayURL(metadataURI),
+    //   };
+    // };
+    // const getNFTMetadata = async (tokenId) => {
+    //   const metadataURI = await this.contract.tokenURI(tokenId);
+    //   const metadata = await this.getIPFSJSON(metadataURI);
+
+    //   return { metadata, metadataURI };
+    // };
+    // const pinTokenData = async (tokenId) => {
+    //   const { metadata, metadataURI } = await this.getNFTMetadata(tokenId);
+    //   const { image: assetURI } = metadata;
+
+    //   console.log(`Pinning asset data (${assetURI}) for token id ${tokenId}....`);
+    //   await this.pin(assetURI);
+
+    //   console.log(`Pinning metadata (${metadataURI}) for token id ${tokenId}...`);
+    //   await this.pin(metadataURI);
+
+    //   return { assetURI, metadataURI };
+    // };
+    // const pin = async (cidOrURI) => {
+    //   const cid = extractCID(cidOrURI);
+
+    //   // Make sure IPFS is set up to use our preferred pinning service.
+    //   await this._configurePinningService();
+
+    //   // Check if we've already pinned this CID to avoid a "duplicate pin" error.
+    //   const pinned = await this.isPinned(cid);
+    //   if (pinned) {
+    //     return;
+    //   }
+
+    //   // Ask the remote service to pin the content.
+    //   // Behind the scenes, this will cause the pinning service to connect to our local IPFS node
+    //   // and fetch the data using Bitswap, IPFS's transfer protocol.
+    //   await this.ipfs.pin.remote.add(cid, { service: config.pinningService.name });
+    // };
+
+    /**
+     * Drag n Drop File Manager
+     */
     const onDropHandler = ($event) => {
       if (isUploading.value) return false;
-
       isDragged.value = false;
-
       fileRef.value.files = $event.dataTransfer.files;
-
       onFileChangedHandler();
     };
     const openSelectFile = () => {
@@ -217,28 +327,20 @@ export default {
     const onDragLeave = () => {
       isDragged.value = false;
     };
-
     /**
      * @param {File} file
      */
     const uploadFileHandler = async (file) => {
       const result = await uploadBlob(file);
-
       finished.value++;
-
       const { error } = result;
       if (error && error instanceof Error) notyf.error(error.message);
-
       return result;
     };
-
     const onFileChangedHandler = async () => {
       isUploading.value = true;
-
       store.addFiles(...fileRef.value.files);
-
       const files = store.files.map((file) => uploadFileHandler(file));
-
       try {
         let results = await Promise.all(files);
         const successfully = results.filter(({ error }) => !error);
@@ -252,17 +354,15 @@ export default {
           notyf.success(`${successfully.length} files successfully processed.`);
         }
       } catch (error) {
-        notyf.error(`Opss!, something error while processing your files.`);
+        notyf.error(`Oops! an error while processing your files.`);
       } finally {
         finished.value = 0;
         isUploading.value = false;
       }
     };
-
     const fileCount = computed(() => {
       return store.files.length;
     });
-
     const result = computed(() => {
       return {
         count: store.results.length,
@@ -291,6 +391,11 @@ export default {
       attributes,
       fileSize,
       mintNFT,
+      // mintToken,
+      // createNFTFromAssetData,
+      // getNFTMetadata,
+      // pinTokenData,
+      // pin,
       onDragEnter,
       onDragLeave,
       onDropHandler,
@@ -307,14 +412,21 @@ export default {
 @import '../assets/styles/mixins.scss';
 
 section#content {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
   height: 100%;
 
   .main {
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 0 10px 0;
+    overflow: hidden;
+    @include breakpoint($medium) {
+      height: 99%;
+    }
 
     section#connect {
       height: 100%;
@@ -324,7 +436,12 @@ section#content {
       flex-direction: column;
       align-content: center;
       justify-content: center;
-      padding: 0 60px 40px;
+      padding: 10px;
+      overflow: hidden;
+
+      @include breakpoint($medium) {
+        padding: 0 60px 20px;
+      }
 
       .row {
         display: flex;
@@ -348,18 +465,30 @@ section#content {
         flex-direction: row;
         align-content: center;
         justify-content: center;
-        align-items: center;
+        align-items: flex-end;
 
         @include breakpoint($medium) {
           width: 60%;
         }
 
+        .connect-message {
+          max-width: 440px;
+        }
+
         section#panel-upload {
           background-color: var(--gradient-100);
           border-top-left-radius: 1rem;
-          border-bottom-left-radius: 1rem;
+          border-top-right-radius: 1rem;
           width: 100%;
           height: 100%;
+
+          @include breakpoint($medium) {
+            margin-top: 0;
+            padding-top: 0;
+            border-top-left-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+            border-top-right-radius: 0;
+          }
 
           .panel-upload--content,
           .panel-upload--content .panel-upload--dropzone {
@@ -381,12 +510,10 @@ section#content {
               > * {
                 pointer-events: none;
               }
-
               .dropzone-label {
                 background-color: rgba(0, 0, 0, 0.2);
               }
             }
-
             input {
               display: none;
             }
@@ -398,13 +525,11 @@ section#content {
               border-radius: 0.5rem;
               text-align: center;
               width: 80%;
-
               svg {
                 height: 48px;
                 width: 48px;
                 margin-bottom: 1rem;
               }
-
               span {
                 font-size: 0.8rem;
               }
@@ -412,10 +537,8 @@ section#content {
             .dropzone-details {
               position: absolute;
               display: flex;
-
               bottom: 1rem;
               left: 1rem;
-
               .dropzone-detail {
                 background-color: var(--gradient-300);
                 border-radius: 1rem;
@@ -427,7 +550,6 @@ section#content {
 
             .dropzone-is-loading {
               opacity: 0;
-
               position: relative;
               height: 4px;
               display: block;
@@ -477,7 +599,7 @@ section#content {
         flex-direction: column;
         align-content: center;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
 
         @include breakpoint($medium) {
           width: 40%;
@@ -485,18 +607,35 @@ section#content {
 
         .form-container {
           display: flex;
-          width: 100%;
+          width: 99%;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           border: 4px solid var(--gradient-100);
-          border-top-right-radius: 1rem;
-          border-bottom-right-radius: 1rem;
-          padding: 30px 20px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          border-bottom-left-radius: 1em;
+          border-bottom-right-radius: 1em;
+          padding: 30px 0 30px 0;
+          @include breakpoint($medium) {
+            width: 100%;
+            border-top-right-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            padding: 30px 20px;
+          }
 
           h2 {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
+            line-height: 1.5rem;
             text-align: center;
+            padding-bottom: 2px;
+            text-decoration: none;
+            border-bottom: 1px solid;
+            margin: 0 auto 10px;
+            @include breakpoint($medium) {
+              font-size: 1.6rem;
+              line-height: 1.7rem;
+            }
           }
         }
 
@@ -583,7 +722,7 @@ section#content {
       }
 
       .button-container {
-        margin: 30px auto 20px;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-content: center;
@@ -598,15 +737,15 @@ section#content {
         }
 
         .mint-button {
-          color: #1a1a1a;
-          background-color: #1ce7b4;
+          color: #fff;
+          background-color: #08d0a5;
           font-size: 18px;
           font-weight: bold;
           width: auto;
           height: 55px;
           border: 0;
-          padding-left: 60px;
-          padding-right: 60px;
+          padding-left: 115px;
+          padding-right: 115px;
           border-radius: 10px;
           cursor: pointer;
         }
@@ -619,8 +758,15 @@ section#content {
       }
 
       h2 {
-        font-size: 2.85rem;
+        font-size: 1.8rem;
         text-align: center;
+        margin-block-start: 0;
+        margin-block-end: 0.2em;
+        @include breakpoint($medium) {
+          font-size: 2.85rem;
+          margin-block-start: 0.3em;
+          margin-block-end: 0.2em;
+        }
       }
 
       a {

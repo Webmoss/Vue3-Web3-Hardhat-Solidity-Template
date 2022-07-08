@@ -191,6 +191,9 @@ export default {
 };
 </script>
 <style lang="scss">
+@import '../assets/styles/variables.scss';
+@import '../assets/styles/mixins.scss';
+
 .track {
   display: block;
   box-sizing: border-box;
@@ -202,7 +205,13 @@ export default {
   border-radius: 6px;
   overflow: hidden;
   float: left;
-  margin: 0 20px 20px 0;
+  margin: 0 20px 20px 80px;
+  @include breakpoint($medium) {
+    margin: 0 20px 20px 0;
+  }
+  @include breakpoint($large) {
+    margin: 0 20px 20px 0;
+  }
 
   &:hover {
     border: 2px solid #8d50f5;
@@ -253,6 +262,21 @@ export default {
     }
   }
 }
+
+// .track:nth-child(2n) {
+//   margin: 0 0 20px 0;
+//   @include breakpoint($medium) {
+//     margin: 0 20px 20px 0;
+//   }
+// }
+
+// .track:nth-child(3n) {
+//   margin: 0 20px 20px 0;
+//   @include breakpoint($medium) {
+//     margin: 0 20px 20px 0;
+//     margin: 0 0 20px 0;
+//   }
+// }
 
 input[type='range'] {
   margin: auto;

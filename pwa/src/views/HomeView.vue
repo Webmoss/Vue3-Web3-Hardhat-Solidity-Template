@@ -10,31 +10,37 @@
         <div class="right">
           <h1>Hear it, See it, Live it.</h1>
           <p>
-            Get you Mojo on and stream Audio/Media directly from your favorite content creators on
-            the blockchain. Subscribe and follow artists and digital content creators, purchase a
-            custom NFT's and receive additional content, rewards and more.
+            Stream audio, video &amp; media directly from your favorite content creators on the
+            blockchain. Subscribe and follow your favorite digital artists and purchase your very
+            own custom NFT. Get your Mojo on today to get access to additional content, rewards and
+            so much more.
           </p>
         </div>
       </section>
-      <section id="stream">
+      <section id="stream-home">
         <h2>Latest Tracks</h2>
         <div class="row">
           <TrackPlayer v-for="track in categoryTracks" :track="track" :key="track.id"></TrackPlayer>
         </div>
       </section>
-      <section id="connect">
+      <section id="connect" class="multi-bg-header">
         <h2>Connect</h2>
         <div class="row">
           <div class="left">
             <p>
-              Upload your audio/media files with Mojo to the Interplanetary File System (<a
+              Upload your audio/media files directly to the Interplanetary File System (<a
                 href="https://infura.io/product/ipfs"
                 target="_blank"
                 rel="noopener"
                 >IPFS</a
-              >) Network. Your content can never get deleted, hacked, edited and will never get
-              saved to any server (100% decentralized). Share your content by using a unique hash or
-              content identifier (CID)
+              >) Network with Mojo. <br /><br />
+              Your content can never get deleted, edited or hacked and will never get saved to any
+              server so <strong>100% decentralized</strong>.<br /><br />
+              Manage your NFT metadata with our MetaManager. You can now add and manage custom NFT
+              attributes, giving your pieces unique features, tailored to your NFT audience.
+              <br /><br />
+              No decentralised data is harmed in the editing of your NFT metadata, so it holds true
+              to it's core values and features.
             </p>
           </div>
           <div class="right">
@@ -43,14 +49,14 @@
               Let's Stream 🎶
             </button>
             <button @click="$router.push('upload')" v-if="currentAccount" className="upload-button">
-              Upload Files 🎤
+              IPFS Upload 🎤
             </button>
             <button
               @click="$router.push('mint')"
               v-if="currentAccount"
               className="mint-media-button"
             >
-              Create Content 🧪
+              Get Minty 🧪
             </button>
           </div>
         </div>
@@ -60,9 +66,13 @@
           <div class="left">
             <h1>Royalties</h1>
             <h2>
-              Your streams directly support
-              <span class="yellow">artists &amp; content creators</span>.
+              Support artists &amp; creators<br />
+              <span class="yellow">directly with your streams</span>
             </h2>
+            <p>
+              Every time you click <span class="blue">Play</span>, our smart contracts<br />
+              pay artists and content creators directly
+            </p>
           </div>
           <div class="right">
             <div class="royalty-graphic">
@@ -123,6 +133,7 @@ async function fetchData() {
   console.log('Tracks Loaded:', res);
   categoryTracks.value = await res.json();
 }
+
 fetchData();
 
 onMounted(() => {
@@ -137,7 +148,7 @@ onMounted(() => {
 
 section#content {
   position: relative;
-  height: 100%;
+  height: auto;
 
   .main {
     width: 100%;
@@ -148,20 +159,20 @@ section#content {
     section#home {
       color: #212121;
       background: #ffca28;
-      border-bottom: 1px solid #1a1a1a;
+      border-bottom: 1px solid #212121;
       display: flex;
       flex-direction: column;
       align-content: center;
       align-items: center;
       justify-content: center;
-      padding: 60px 60px 60px 0;
+      padding: 20px;
 
       @include breakpoint($medium) {
         flex-direction: row;
         align-content: center;
         align-items: center;
         justify-content: space-between;
-        padding: 60px 60px 60px 0;
+        padding: 40px 20px;
       }
 
       .left {
@@ -240,7 +251,7 @@ section#content {
       }
     }
 
-    section#stream {
+    section#stream-home {
       color: #fff;
       background: #1c8bfe;
       display: flex;
@@ -248,42 +259,25 @@ section#content {
       align-content: center;
       align-items: center;
       justify-content: center;
-      padding: 60px;
+      padding: 20px 0 0 20px;
+
+      @include breakpoint($medium) {
+        padding: 40px 0 0 120px;
+      }
+      @include breakpoint($large) {
+        padding: 40px 0 0 0;
+      }
+      @include breakpoint($x3xl) {
+        padding: 40px 0 0 0;
+      }
 
       .row {
         width: 100%;
-        max-width: 960px;
         display: inline-block;
-        margin: 40px auto;
-      }
-
-      .left {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 50px 20px 60px 60px;
-
+        margin: 20px auto;
         @include breakpoint($medium) {
-          width: 29%;
-        }
-      }
-
-      .right {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 20px;
-        .track-list {
-          width: 100%;
           max-width: 960px;
-          display: inline-block;
-          margin: 0 auto;
+          margin: 40px auto;
         }
       }
 
@@ -361,12 +355,15 @@ section#content {
 
     section#connect {
       color: #1a1a1a;
-      background: #fff;
       display: flex;
       flex-direction: column;
       align-content: center;
       justify-content: center;
-      padding: 20px 60px 60px;
+      padding: 30px 20px 50px 20px;
+
+      @include breakpoint($medium) {
+        padding: 60px 40px 100px 40px;
+      }
 
       .row {
         display: flex;
@@ -381,31 +378,38 @@ section#content {
           justify-content: center;
           align-items: center;
         }
-      }
 
-      .left {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
+        .left {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-content: center;
+          justify-content: flex;
+          align-items: center;
 
-        @include breakpoint($medium) {
-          width: 50%;
+          @include breakpoint($medium) {
+            width: 60%;
+          }
+
+          p {
+            max-width: 440px;
+            line-height: 1.7;
+            margin: 0 auto;
+            text-align: center;
+          }
         }
-      }
 
-      .right {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
+        .right {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-content: center;
+          justify-content: center;
+          align-items: flex-start;
 
-        @include breakpoint($medium) {
-          width: 50%;
+          @include breakpoint($medium) {
+            width: 40%;
+          }
         }
       }
 
@@ -433,22 +437,28 @@ section#content {
           border-bottom: none;
         }
       }
+    }
 
-      p {
-        line-height: 1.7;
-        margin-bottom: 20px;
-        text-align: center;
-      }
+    .multi-bg-header {
+      background: #fff;
+      background-image: url('./GreenCorner.png');
+      background-repeat: no-repeat;
+      background-position: center left;
+      background-size: auto;
     }
 
     section#royalties {
       color: #fff;
-      background: #1a1a1a;
+      background: #000000;
       display: flex;
       flex-direction: column;
       align-content: center;
       justify-content: center;
-      padding: 60px;
+      padding: 20px;
+
+      @include breakpoint($medium) {
+        padding: 20px;
+      }
 
       .row {
         display: flex;
@@ -521,9 +531,11 @@ section#content {
       }
 
       h2 {
-        font-size: 2.25rem;
+        font-size: 2.2rem;
         text-align: center;
+        margin-bottom: 5px;
         .yellow {
+          font-size: 2.1rem;
           color: #ffca28;
         }
       }
@@ -546,9 +558,19 @@ section#content {
       }
 
       p {
+        max-width: 440px;
         line-height: 1.7;
-        margin-bottom: 20px;
+        font-weight: 300;
+        margin: 0 auto;
         text-align: center;
+        .blue {
+          font-size: 20px;
+          font-weight: 500;
+          text-decoration: underline;
+          text-decoration-thickness: 1px;
+          text-underline-offset: 2px;
+          color: #2bb5f0;
+        }
       }
     }
   }

@@ -129,9 +129,11 @@ section#content {
       align-content: center;
       align-items: center;
       justify-content: center;
-      padding: 60px 20px 0;
+      padding: 0;
+      overflow: hidden;
 
       @include breakpoint($medium) {
+        padding: 0;
         flex-direction: row;
         align-content: center;
         align-items: flex-start;
@@ -159,7 +161,7 @@ section#content {
         align-content: center;
         justify-content: center;
         align-items: center;
-        padding: 40px 20px;
+        padding: 60px 20px 0;
         .track-list {
           width: 100%;
           max-width: 960px;
